@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ravesoft.app.ws.ui.model.response.User;
+
 @RestController
 @RequestMapping("users")
 public class UserController {
@@ -22,8 +24,10 @@ public class UserController {
 	
 	
 	@GetMapping(path="/{userId}")
-	public String getUser(@PathVariable String userId) {
-		return "Get user" +userId;
+	public User getUser(@PathVariable String userId) {
+		User user = new User("1","Ra", "asas");
+		
+		return user;
 	}
 	
 	@PostMapping
