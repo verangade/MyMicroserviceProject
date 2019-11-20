@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 	
 	
-
+	@GetMapping
+	public String getUsers(@RequestParam(value="page") int page , @RequestParam(value="limit") int limit) {
+		return "Get user" +page+" "+limit;
+	}
+	
 	
 	@GetMapping(path="/{userId}")
 	public String getUser(@PathVariable String userId) {
