@@ -1,6 +1,8 @@
 package com.ravesoft.app.ws.ui.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,11 +27,19 @@ public class UserController {
 	
 	
 	@GetMapping(path="/{userId}",produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
+	public ResponseEntity<User> getUser(@PathVariable String userId) {
+		User user = new User("1","Ra", "asas");
+		ResponseEntity<User> rs = new ResponseEntity<User>(user, HttpStatus.OK);
+		return rs;
+	}
+	
+	
+	/*@GetMapping(path="/{userId}",produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
 	public User getUser(@PathVariable String userId) {
 		User user = new User("1","Ra", "asas");
 		
 		return user;
-	}
+	}*/
 	
 	@PostMapping
 	public String createUSer() {
