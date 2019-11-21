@@ -1,8 +1,18 @@
 package com.ravesoft.app.ws.ui.model.request;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class UserDetailRequestModel {
+	
+	@NotNull(message="ID Cannot be null")
+	@Size(min=4)
 	private String id;
 	private String name;
+	
+	@NotNull(message="Email Cannot be null")
+	@Email
 	private String email;
 	private String address;
 	private Integer age;

@@ -1,5 +1,7 @@
 package com.ravesoft.app.ws.ui.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +49,7 @@ public class UserController {
 			MediaType.APPLICATION_XML_VALUE}	
 			,produces={MediaType.APPLICATION_JSON_VALUE,
 					MediaType.APPLICATION_XML_VALUE})
-	public ResponseEntity<User> createUSer(@RequestBody UserDetailRequestModel model) {
+	public ResponseEntity<User> createUSer(@Valid @RequestBody UserDetailRequestModel model) {
 		
 		User user = new User();
 		user.setId(model.getId());
