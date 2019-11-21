@@ -1,20 +1,22 @@
-package com.ravesoft.app.ws.ui.model.response;
+package com.ravesoft.app.ws.ui.model.request;
 
-public class User {
+public class UserDetailRequestModel {
 	private String id;
 	private String name;
 	private String email;
 	private String address;
+	private Integer age;
 	
-	public User() {
-		
+	public UserDetailRequestModel() {
 	}
 	
-	public User(String id, String name, String email) {
+	public UserDetailRequestModel(String id, String name, String email, String address, Integer age) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.email = email;
+		this.address = address;
+		this.age = age;
 	}
 	public String getId() {
 		return id;
@@ -34,15 +36,18 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 	public String getAddress() {
 		return address;
 	}
-
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	public Integer getAge() {
+		return age;
+	}
+	public void setAge(Integer age) {
+		this.age = age;
+	}
 	
 	
-
 }

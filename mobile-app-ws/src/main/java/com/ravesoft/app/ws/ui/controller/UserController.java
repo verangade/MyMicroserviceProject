@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ravesoft.app.ws.ui.model.request.UserDetailRequestModel;
 import com.ravesoft.app.ws.ui.model.response.User;
 
 @RestController
@@ -41,9 +43,20 @@ public class UserController {
 		return user;
 	}*/
 	
-	@PostMapping
-	public String createUSer() {
-		return "create user";
+	@PostMapping(consumes={MediaType.APPLICATION_JSON_VALUE,
+			MediaType.APPLICATION_XML_VALUE}	
+			,produces={MediaType.APPLICATION_JSON_VALUE,
+					MediaType.APPLICATION_XML_VALUE})
+	public ResponseEntity<User> createUSer(@RequestBody UserDetailRequestModel model) {
+		
+		User user = new User();
+		user.setId(model.getId());
+		user.setEmail(model.getEmail());
+		user.setName(model.getName());
+		user.setAddress(model.getAddress());
+		
+		ResponseEntity<User> rs = new ResponseEntity<User>(user, HttpStatus.OK);
+		return rs;
 	}
 	
 	@PutMapping
