@@ -68,7 +68,8 @@ public class UserController {
 		String x = null;
 		//x.chars();
 		
-		throw new UserServiceException("USer service excpetion ............");
+		//throw new UserServiceException("USer service excpetion ............");
+		throw new NullPointerException("null excpetion ............");
 		//return "update user";
 	}
 	
