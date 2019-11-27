@@ -27,5 +27,12 @@ public class ApplicationException extends ResponseEntityExceptionHandler {
 		
 		return new ResponseEntity<>(errorMessage, new HttpHeaders(),HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@ExceptionHandler(value=NullPointerException.class)
+	public ResponseEntity<Object> handleNullPointerException(Exception ex, WebRequest request) {
+	
+		
+		return new ResponseEntity<>("Handle null pointer exception", new HttpHeaders(),HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
 }

@@ -67,7 +67,7 @@ public class UserController {
 		String x = null;
 		//x.chars();
 		
-		throw new NumberFormatException();
+		throw new NullPointerException();
 		//return "update user";
 	}
 	
