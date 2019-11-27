@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ravesoft.app.ws.ui.exception.UserServiceException;
 import com.ravesoft.app.ws.ui.model.request.UserDetailRequestModel;
 import com.ravesoft.app.ws.ui.model.response.User;
 
@@ -67,7 +68,7 @@ public class UserController {
 		String x = null;
 		//x.chars();
 		
-		throw new NullPointerException();
+		throw new UserServiceException("USer service excpetion ............");
 		//return "update user";
 	}
 	
