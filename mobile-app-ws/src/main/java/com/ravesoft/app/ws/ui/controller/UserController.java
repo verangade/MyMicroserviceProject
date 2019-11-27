@@ -2,6 +2,7 @@ package com.ravesoft.app.ws.ui.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ravesoft.app.ws.ui.exception.UserServiceException;
 import com.ravesoft.app.ws.ui.model.request.UserDetailRequestModel;
 import com.ravesoft.app.ws.ui.model.response.User;
+import com.ravesoft.app.ws.ui.service.UserService;
 
 @RestController
 @RequestMapping("users")
 public class UserController {
+	
+	@Autowired
+	UserService userService;
 	
 	
 	@GetMapping
@@ -52,11 +57,7 @@ public class UserController {
 					MediaType.APPLICATION_XML_VALUE})
 	public ResponseEntity<User> createUSer(@Valid @RequestBody UserDetailRequestModel model) {
 		
-		User user = new User();
-		user.setId(model.getId());
-		user.setEmail(model.getEmail());
-		user.setName(model.getName());
-		user.setAddress(model.getAddress());
+		User user = userService.createUSer(model);
 		
 		ResponseEntity<User> rs = new ResponseEntity<User>(user, HttpStatus.OK);
 		return rs;

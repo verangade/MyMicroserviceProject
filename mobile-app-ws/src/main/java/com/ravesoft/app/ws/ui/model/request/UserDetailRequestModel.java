@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 public class UserDetailRequestModel {
 	
 	@NotNull(message="ID Cannot be null")
-	@Size(min=4)
+	@Size(min=4,message="ID needs to be in more than 4")
 	private String id;
 	private String name;
 	
