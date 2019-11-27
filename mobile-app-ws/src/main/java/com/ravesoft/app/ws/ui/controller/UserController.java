@@ -63,7 +63,12 @@ public class UserController {
 	
 	@PutMapping
 	public String updateUSer() {
-		return "update user";
+		
+		String x = null;
+		//x.chars();
+		
+		throw new NumberFormatException();
+		//return "update user";
 	}
 	
 	@DeleteMapping(path="/{id}")
