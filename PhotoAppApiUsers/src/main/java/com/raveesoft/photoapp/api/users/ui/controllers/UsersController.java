@@ -1,5 +1,7 @@
 package com.raveesoft.photoapp.api.users.ui.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +25,7 @@ public class UsersController {
 	}
 	
 	@PostMapping
-	public String creaeUser(@RequestBody CreateUserRequestModel userDetails) {
+	public String creaeUser(@Valid @RequestBody CreateUserRequestModel userDetails) {
 		return "";
 	}
 
