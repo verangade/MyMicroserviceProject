@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.raveesoft.photoapp.api.users.service.UsersService;
 import com.raveesoft.photoapp.api.users.shared.UserDto;
 import com.raveesoft.photoapp.api.users.ui.model.CreateUserRequestModel;
+import com.raveesoft.photoapp.api.users.ui.model.CreateUserResponseModel;
 
 @RestController
 @RequestMapping("/users")
@@ -35,12 +36,14 @@ public class UsersController {
 	}
 	
 	@PostMapping
-	public ResponseEntity createUser(@Valid @RequestBody CreateUserRequestModel userDetails) {
+	public ResponseEntity<CreateUserResponseModel> createUser(@Valid @RequestBody CreateUserRequestModel userDetails) {
 		ModelMapper mapper = new ModelMapper();
 		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		UserDto userDto = mapper.map(userDetails, UserDto.class);
 		usersService.createUser(userDto);
-		return new ResponseEntity(HttpStatus.CREATED);
+		
+		CreateUserResponseModel response = mapper.map(userDto, CreateUserResponseModel.class); 
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 		
 	}
 
