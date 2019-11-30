@@ -7,5 +7,6 @@ import com.raveesoft.photoapp.api.users.shared.UserDto;
 public  interface UsersService extends UserDetailsService{
 	
 	public UserDto createUser(UserDto userDto);
+	public UserDto getUserDetailByEmail(String email);
 
 }

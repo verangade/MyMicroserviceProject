@@ -18,45 +18,54 @@ import com.raveesoft.photoapp.api.users.shared.UserDto;
 
 @Service
 public class UsersServiceImpl implements UsersService {
-	
+
 	private UsersRepository usersRepository;
-	
+
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
-	
+
 	@Autowired
-	public UsersServiceImpl(UsersRepository usersRepository,BCryptPasswordEncoder bCryptPasswordEncoder) {
+	public UsersServiceImpl(UsersRepository usersRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
 		this.usersRepository = usersRepository;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
-
 
 	@Override
 	public UserDto createUser(UserDto userDto) {
 		userDto.setUserId(UUID.randomUUID().toString());
 		userDto.setEmncryptedPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
-		
+
 		ModelMapper mapper = new ModelMapper();
 		mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		UserEntity entity = mapper.map(userDto, UserEntity.class);
 
 		usersRepository.save(entity);
-		
-		UserDto returnValue = mapper.map(entity, UserDto.class); 
+
+		UserDto returnValue = mapper.map(entity, UserDto.class);
 		return returnValue;
 	}
 
-
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserEntity userEntity =  usersRepository.findByEmail(username);
-		
-		if(userEntity==null) {
+		UserEntity userEntity = usersRepository.findByEmail(username);
+
+		if (userEntity == null) {
 			throw new UsernameNotFoundException(username);
 		}
-		
-		return new User(userEntity.getUserId(), userEntity.getEmncryptedPassword(), true, true, true,true,new ArrayList<>());
-		
+
+		return new User(userEntity.getEmail(), userEntity.getEmncryptedPassword(), true, true, true, true,
+				new ArrayList<>());
+
+	}
+
+	@Override
+	public UserDto getUserDetailByEmail(String email) {
+		UserEntity userEntity = usersRepository.findByEmail(email);
+
+		if (userEntity == null) {
+			throw new UsernameNotFoundException(email);
+		}
+	
+		return new ModelMapper().map(userEntity, UserDto.class);
 	}
 
 }
