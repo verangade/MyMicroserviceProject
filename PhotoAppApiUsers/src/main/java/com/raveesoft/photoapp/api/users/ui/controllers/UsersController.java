@@ -33,7 +33,7 @@ public class UsersController {
 	
 	@GetMapping("/status/check")
 	public String status() {
-		return "Users microservice is working port : "+env.getProperty("local.server.port");
+		return "Users microservice is working port : "+env.getProperty("local.server.port")+ "token secret "+env.getProperty("token.secret");
 	}
 	
 	@PostMapping(consumes= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE}
