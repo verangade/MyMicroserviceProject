@@ -49,6 +49,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
 		.antMatchers(HttpMethod.POST,env.getProperty("api.login.path.url")).permitAll()
 		.antMatchers(env.getProperty("api.h2-console.url.path")).permitAll()
 		.antMatchers(env.getProperty("api.zuul.actuator.url.path")).permitAll()
+		.antMatchers(env.getProperty("api.users.actuator.url.path")).permitAll()
 		.anyRequest().authenticated() // other every urls needed authorization header - jwt token
 		.and()
 		.addFilter(new AuthorizationFilter(authenticationManager(), env) );
