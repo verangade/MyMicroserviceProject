@@ -6,23 +6,23 @@ import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.raveesoft.photoapp.api.users.data.AlbumServiceClient;
 import com.raveesoft.photoapp.api.users.data.UserEntity;
 import com.raveesoft.photoapp.api.users.repository.UsersRepository;
 import com.raveesoft.photoapp.api.users.shared.UserDto;
 import com.raveesoft.photoapp.api.users.ui.model.AlbumResponseModel;
+
+import feign.FeignException;
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -32,6 +32,8 @@ public class UsersServiceImpl implements UsersService {
 	private Environment env;
 	//private RestTemplate restTemplate;
 	private AlbumServiceClient albumServiceClient;
+	
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	public UsersServiceImpl(UsersRepository usersRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
@@ -98,7 +100,12 @@ public class UsersServiceImpl implements UsersService {
 		
 		List<AlbumResponseModel> albumList = albumListResponse.getBody();
 		*/
-		List<AlbumResponseModel> albumList = albumServiceClient.getAlbums(userId);
+		List<AlbumResponseModel> albumList =null;
+		try {
+			albumList = albumServiceClient.getAlbums(userId);
+		} catch (FeignException e) {
+			logger.error(e.getMessage());
+		}
 		userDto.setAlbums(albumList);
 	
 		return userDto;
