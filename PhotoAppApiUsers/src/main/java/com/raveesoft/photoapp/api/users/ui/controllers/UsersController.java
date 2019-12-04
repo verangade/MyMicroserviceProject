@@ -60,19 +60,12 @@ public class UsersController {
 	}
 	
 	@GetMapping(value="/{userId}",produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	public ResponseEntity<UserDto> getUser(@PathVariable String userId) {
+	public ResponseEntity<UserResponseModel> getUser(@PathVariable String userId) {
 		UserDto userDto = usersService.getUserDetailById(userId);
-		//UserResponseModel returnValue = new ModelMapper().map(userDto,UserResponseModel.class);
 		
-		String albumUrl = String.format(env.getProperty("albums.url"), userId );
+		UserResponseModel returnValue = new ModelMapper().map(userDto, UserResponseModel.class);
 		
-		ResponseEntity<List<AlbumResponseModel>> albumListResponse =  restTemplate.exchange(albumUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<AlbumResponseModel>>() {
-		});
-		
-		List<AlbumResponseModel> albumList = albumListResponse.getBody();
-		userDto.setAlbums(albumList);
-		
-		return ResponseEntity.status(HttpStatus.OK).body(userDto);
+		return ResponseEntity.status(HttpStatus.OK).body(returnValue);
 	}
 
 }
