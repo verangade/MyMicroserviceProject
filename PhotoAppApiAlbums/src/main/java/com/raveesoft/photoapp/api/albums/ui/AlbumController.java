@@ -40,6 +40,9 @@ public class AlbumController {
 			return returnValue;
 		}
 		
+		/**
+		 * This is how list is model mapped to list important
+		 */
 		Type listType = new TypeToken<List<AlbumResponseModel>>(){}.getType();
 		returnValue = new ModelMapper().map(list, listType);
 		
