@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.raveesoft.photoapp.api.users.data.AlbumServiceClient;
 import com.raveesoft.photoapp.api.users.data.UserEntity;
 import com.raveesoft.photoapp.api.users.repository.UsersRepository;
 import com.raveesoft.photoapp.api.users.shared.UserDto;
@@ -29,15 +30,16 @@ public class UsersServiceImpl implements UsersService {
 	private UsersRepository usersRepository;
 	private BCryptPasswordEncoder bCryptPasswordEncoder;	
 	private Environment env;
-	private RestTemplate restTemplate;
+	//private RestTemplate restTemplate;
+	private AlbumServiceClient albumServiceClient;
 
 	@Autowired
 	public UsersServiceImpl(UsersRepository usersRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
-			Environment env, RestTemplate restTemplate) {
+			Environment env, AlbumServiceClient albumServiceClient) {
 		this.usersRepository = usersRepository;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.env = env;
-		this.restTemplate = restTemplate;
+		this.albumServiceClient = albumServiceClient;
 	}
 
 	@Override
@@ -85,15 +87,18 @@ public class UsersServiceImpl implements UsersService {
 
 		if (userEntity == null) {
 			throw new UsernameNotFoundException(userId);
-		}
-		
+		}		
 		UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
+		
+		/*
 		String albumUrl = String.format(env.getProperty("albums.url"), userId );
 		
 		ResponseEntity<List<AlbumResponseModel>> albumListResponse =  restTemplate.exchange(albumUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<AlbumResponseModel>>() {
 		});
 		
 		List<AlbumResponseModel> albumList = albumListResponse.getBody();
+		*/
+		List<AlbumResponseModel> albumList = albumServiceClient.getAlbums(userId);
 		userDto.setAlbums(albumList);
 	
 		return userDto;
