@@ -1,12 +1,15 @@
 package com.raveesoft.photoapp.api.users.ui.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
-import org.apache.commons.lang.ObjectUtils.Null;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.raveesoft.photoapp.api.users.service.UsersService;
 import com.raveesoft.photoapp.api.users.shared.UserDto;
+import com.raveesoft.photoapp.api.users.ui.model.AlbumResponseModel;
 import com.raveesoft.photoapp.api.users.ui.model.CreateUserRequestModel;
 import com.raveesoft.photoapp.api.users.ui.model.CreateUserResponseModel;
 import com.raveesoft.photoapp.api.users.ui.model.UserResponseModel;
@@ -26,6 +31,9 @@ import com.raveesoft.photoapp.api.users.ui.model.UserResponseModel;
 @RestController
 @RequestMapping("/users")
 public class UsersController {
+	
+	@Autowired
+	RestTemplate restTemplate;
 	
 	@Autowired
 	private UsersService usersService;
@@ -52,10 +60,19 @@ public class UsersController {
 	}
 	
 	@GetMapping(value="/{userId}",produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
-	public ResponseEntity<UserResponseModel> getUser(@PathVariable String userId) {
+	public ResponseEntity<UserDto> getUser(@PathVariable String userId) {
 		UserDto userDto = usersService.getUserDetailById(userId);
-		UserResponseModel returnValue = new ModelMapper().map(userDto,UserResponseModel.class);
-		return ResponseEntity.status(HttpStatus.OK).body(returnValue);
+		//UserResponseModel returnValue = new ModelMapper().map(userDto,UserResponseModel.class);
+		
+		String albumUrl = String.format(env.getProperty("albums.url"), userId );
+		
+		ResponseEntity<List<AlbumResponseModel>> albumListResponse =  restTemplate.exchange(albumUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<AlbumResponseModel>>() {
+		});
+		
+		List<AlbumResponseModel> albumList = albumListResponse.getBody();
+		userDto.setAlbums(albumList);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(userDto);
 	}
 
 }
